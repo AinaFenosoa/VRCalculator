@@ -1,5 +1,5 @@
 :root {
-  --fond-ecran-image: url('./sombre.png');
+  --fond-ecran-image: url('./assets/sombre.png');
   --calculatrice-fond: rgba(26, 26, 26, 0.92);
   --calculatrice-bordure: rgba(183, 28, 28, 0.3);
   --calculatrice-ombre: rgba(0, 0, 0, 0.7);
@@ -21,7 +21,7 @@
 }
 
 body.mode-clair {
-  --fond-ecran-image: url('./clair.png');
+  --fond-ecran-image: url('./assets/clair.png');
   --calculatrice-fond: rgba(244, 249, 255, 0.958);
   --calculatrice-bordure: rgba(0, 0, 0, 0.1);
   --calculatrice-ombre: rgba(0, 0, 0, 0.15);
