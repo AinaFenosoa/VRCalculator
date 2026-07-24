@@ -1,4 +1,3 @@
-// --- Éléments du DOM ---
 const on_off = document.getElementById('on_off');
 const afficheur = document.getElementById('afficheur');
 const boutons = document.querySelectorAll('.boutons button');
@@ -8,7 +7,6 @@ const conteneur = document.querySelector('.container');
 const boutonSombre = document.getElementById('mode_sombre');
 const boutonClair = document.getElementById('mode_clair');
 
-// --- État de la calculatrice ---
 let eteint = true;
 let timeoutId;
 
@@ -57,7 +55,6 @@ function realiserCalcul() {
     try {
         let expression = afficheur.value;
 
-        // Remplacement global des symboles visuels par des opérateurs JS
         expression = expression
             .replace(/X/g, '*')
             .replace(/÷/g, '/')
@@ -73,7 +70,6 @@ function realiserCalcul() {
             return;
         }
 
-        // Arrondi de précision float JS
         resultat = Math.round((resultat + Number.EPSILON) * 1e10) / 1e10;
 
         afficheur.value = resultat.toString().replace(/\./g, ',');
@@ -113,12 +109,10 @@ function gererParenthese() {
     }
 }
 
-// Événements pour tous les boutons (lecture via data-val)
 boutons.forEach(bouton => {
     bouton.addEventListener('click', () => {
         if (eteint) return;
 
-        // On extrait l'attribut data-val défini dans le HTML
         const valeur = bouton.dataset.val;
 
         if (afficheur.value === "Erreur") {
@@ -147,7 +141,7 @@ on_off.addEventListener('click', allumerEcran);
 
 
 // ==========================================
-// 2. ORIENTATION 3D SUBTILE AU SURVOL
+// 2. ORIENTATION AU SURVOL
 // ==========================================
 
 function orienterCalculatriceSubtilement(evenement) {
@@ -201,6 +195,5 @@ function activerThemeClair() {
 boutonSombre.addEventListener('click', activerThemeSombre);
 boutonClair.addEventListener('click', activerThemeClair);
 
-// Initialisation au chargement
 chargerThemePrecedent();
 afficheur.style.opacity = '0.3';

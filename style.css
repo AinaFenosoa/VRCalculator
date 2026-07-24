@@ -1,4 +1,3 @@
-/* --- Variables Palette Mode Sombre --- */
 :root {
   --fond-ecran-image: url('./sombre.png');
   --calculatrice-fond: rgba(26, 26, 26, 0.92);
@@ -18,12 +17,9 @@
   --lcd-fond: #1b2a1e;
   --lcd-texte: #00ff66;
   --lcd-ombre: rgba(0, 255, 102, 0.25);
-  
-  /* Vert Néon RGB pour le mode sombre */
   --glow-couleur: #00ff66;
 }
 
-/* --- Variables Palette Mode Clair --- */
 body.mode-clair {
   --fond-ecran-image: url('./clair.png');
   --calculatrice-fond: rgba(244, 249, 255, 0.958);
@@ -66,13 +62,11 @@ body {
   align-items: center;
 }
 
-/* Évite le blocage des clics sur les SVGs */
 button svg {
   pointer-events: none;
   display: block;
 }
 
-/* --- Conteneur & Effet 3D --- */
 .container {
   width: 100%;
   height: 100%;
@@ -114,7 +108,6 @@ button svg {
   opacity: 0.85;
 }
 
-/* --- Écran 7 Segments Digital --- */
 #ecran {
   display: flex;
   justify-content: center;
@@ -137,7 +130,6 @@ button svg {
   box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.4), 0 0 12px var(--lcd-ombre);
 }
 
-/* --- Section Commandes & Thème --- */
 #commandes_theme {
   display: flex;
   justify-content: space-between;
@@ -159,7 +151,6 @@ button svg {
   transition: transform 0.1s ease-out, background 0.2s ease, color 0.9s ease-out, box-shadow 0.9s ease-out, border-color 0.9s ease-out;
 }
 
-/* Survol On/Off en Mode Sombre (Effet néon) */
 body:not(.mode-clair) #on_off button:hover {
   background: var(--accent-rouge-survol);
   transform: translateZ(3px);
@@ -169,7 +160,6 @@ body:not(.mode-clair) #on_off button:hover {
   transition: transform 0.1s ease-out, background 0.1s ease, color 0.05s ease-out, box-shadow 0.05s ease-out, border-color 0.05s ease-out;
 }
 
-/* Survol On/Off en Mode Clair (Standard sans RGB) */
 body.mode-clair #on_off button:hover {
   background: var(--accent-rouge-survol);
   transform: translateZ(3px);
@@ -217,7 +207,6 @@ body.mode-clair #on_off button:hover {
   transform: translateZ(0) scale(0.95);
 }
 
-/* --- Grille des Touches --- */
 .boutons {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -237,29 +226,19 @@ body.mode-clair #on_off button:hover {
   justify-content: center;
   align-items: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15), 0 0 0px transparent;
-  
-  /* Extinction progressive (0.9s) pour le contour, l'ombre ET la couleur du texte */
   transition: transform 0.1s ease-out, background 0.2s ease, color 0.9s ease-out, box-shadow 0.9s ease-out, border-color 0.9s ease-out, text-shadow 0.9s ease-out;
 }
 
-/* ============================================================
-   SURVOL EN MODE SOMBRE (Effet Clavier Gamer RGB Néon Vert)
-   ============================================================ */
 body:not(.mode-clair) .boutons button:hover {
   background: var(--bouton-survol);
   transform: translateZ(6px);
   border-color: var(--glow-couleur);
-  color: var(--glow-couleur) !important; /* Le chiffre/icône devient vert néon */
-  text-shadow: 0 0 8px var(--glow-couleur); /* Halo néon sur le texte */
+  color: var(--glow-couleur) !important; 
+  text-shadow: 0 0 8px var(--glow-couleur);
   box-shadow: 0 8px 16px rgba(0,0,0,0.4), 0 0 15px var(--glow-couleur), inset 0 0 6px var(--glow-couleur);
-  
-  /* Allumage quasi-immédiat au survol (0.05s) */
   transition: transform 0.1s ease-out, background 0.1s ease, color 0.05s ease-out, box-shadow 0.05s ease-out, border-color 0.05s ease-out, text-shadow 0.05s ease-out;
 }
 
-/* ============================================================
-   SURVOL EN MODE CLAIR (Rendu propre sans halo néon)
-   ============================================================ */
 body.mode-clair .boutons button:hover {
   background: var(--bouton-survol);
   transform: translateZ(6px);
