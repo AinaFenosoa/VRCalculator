@@ -10,27 +10,30 @@
   --bouton-texte: #f8fafc;
   --bouton-survol: #3d3d3d;
   
-  --operateur-fond: #7A7A7A;
+  --operateur-fond: #525252;
   --operateur-texte: #ffffff;
   --accent-rouge: #B71C1C;
   --accent-rouge-survol: #d32f2f;
   
   --lcd-fond: #1b2a1e;
   --lcd-texte: #00ff66;
-  --lcd-ombre: rgba(0, 255, 102, 0.2);
+  --lcd-ombre: rgba(0, 255, 102, 0.25);
+  
+  /* Vert Néon RGB pour le mode sombre */
+  --glow-couleur: #00ff66;
 }
 
 /* --- Variables Palette Mode Clair --- */
 body.mode-clair {
   --fond-ecran-image: url('./clair.png');
-  --calculatrice-fond: rgba(248, 249, 250, 0.94);
+  --calculatrice-fond: rgba(244, 249, 255, 0.958);
   --calculatrice-bordure: rgba(0, 0, 0, 0.1);
   --calculatrice-ombre: rgba(0, 0, 0, 0.15);
   
   --texte-couleur: #121212;
   --bouton-fond: #E0E0E0;
   --bouton-texte: #121212;
-  --bouton-survol: #cbd5e1;
+  --bouton-survol: #d4d4d4;
   
   --operateur-fond: #4F4F4F;
   --operateur-texte: #ffffff;
@@ -63,6 +66,12 @@ body {
   align-items: center;
 }
 
+/* Évite le blocage des clics sur les SVGs */
+button svg {
+  pointer-events: none;
+  display: block;
+}
+
 /* --- Conteneur & Effet 3D --- */
 .container {
   width: 100%;
@@ -87,7 +96,6 @@ body {
   will-change: transform;
 }
 
-/* Décalage en Z léger pour les composants */
 #en_tete, #ecran, #commandes_theme, .boutons {
   transform: translateZ(10px);
 }
@@ -126,7 +134,7 @@ body {
   text-align: right;
   background: var(--lcd-fond);
   color: var(--lcd-texte);
-  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.4), 0 0 10px var(--lcd-ombre);
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.4), 0 0 12px var(--lcd-ombre);
 }
 
 /* --- Section Commandes & Thème --- */
@@ -139,19 +147,34 @@ body {
 
 #on_off button {
   padding: 8px 16px;
-  border: none;
+  border: 1px solid transparent;
   border-radius: 8px;
   background: var(--accent-rouge);
   color: white;
-  font-weight: 600;
-  font-size: 13px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.1s ease-out, background 0.2s ease, color 0.9s ease-out, box-shadow 0.9s ease-out, border-color 0.9s ease-out;
 }
 
-#on_off button:hover {
+/* Survol On/Off en Mode Sombre (Effet néon) */
+body:not(.mode-clair) #on_off button:hover {
   background: var(--accent-rouge-survol);
   transform: translateZ(3px);
+  border-color: var(--glow-couleur);
+  color: var(--glow-couleur);
+  box-shadow: 0 0 15px var(--glow-couleur);
+  transition: transform 0.1s ease-out, background 0.1s ease, color 0.05s ease-out, box-shadow 0.05s ease-out, border-color 0.05s ease-out;
+}
+
+/* Survol On/Off en Mode Clair (Standard sans RGB) */
+body.mode-clair #on_off button:hover {
+  background: var(--accent-rouge-survol);
+  transform: translateZ(3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  transition: transform 0.1s ease-out, background 0.2s ease;
 }
 
 #on_off button:active {
@@ -206,18 +229,43 @@ body {
   font-size: 18px;
   font-weight: 600;
   border-radius: 10px;
-  border: none;
+  border: 1px solid transparent;
   background: var(--bouton-fond);
   color: var(--bouton-texte);
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
-  transition: transform 0.1s ease-out, background 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15), 0 0 0px transparent;
+  
+  /* Extinction progressive (0.9s) pour le contour, l'ombre ET la couleur du texte */
+  transition: transform 0.1s ease-out, background 0.2s ease, color 0.9s ease-out, box-shadow 0.9s ease-out, border-color 0.9s ease-out, text-shadow 0.9s ease-out;
 }
 
-.boutons button:hover {
+/* ============================================================
+   SURVOL EN MODE SOMBRE (Effet Clavier Gamer RGB Néon Vert)
+   ============================================================ */
+body:not(.mode-clair) .boutons button:hover {
   background: var(--bouton-survol);
   transform: translateZ(6px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+  border-color: var(--glow-couleur);
+  color: var(--glow-couleur) !important; /* Le chiffre/icône devient vert néon */
+  text-shadow: 0 0 8px var(--glow-couleur); /* Halo néon sur le texte */
+  box-shadow: 0 8px 16px rgba(0,0,0,0.4), 0 0 15px var(--glow-couleur), inset 0 0 6px var(--glow-couleur);
+  
+  /* Allumage quasi-immédiat au survol (0.05s) */
+  transition: transform 0.1s ease-out, background 0.1s ease, color 0.05s ease-out, box-shadow 0.05s ease-out, border-color 0.05s ease-out, text-shadow 0.05s ease-out;
+}
+
+/* ============================================================
+   SURVOL EN MODE CLAIR (Rendu propre sans halo néon)
+   ============================================================ */
+body.mode-clair .boutons button:hover {
+  background: var(--bouton-survol);
+  transform: translateZ(6px);
+  border-color: transparent;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.1s ease-out, background 0.2s ease, box-shadow 0.2s ease;
 }
 
 .boutons button:active {
@@ -243,7 +291,6 @@ body {
 #egale {
   background: var(--accent-rouge) !important;
   color: white !important;
-  font-size: 22px;
 }
 
 #egale:hover {

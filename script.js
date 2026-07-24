@@ -62,23 +62,20 @@ function realiserCalcul() {
             .replace(/X/g, '*')
             .replace(/÷/g, '/')
             .replace(/,/g, '.')
-            .replace(/%/g, '/100'); // Gestion correcte du pourcentage
+            .replace(/%/g, '/100');
 
-        // Multiplication implicite devant une parenthèse ouvrante
         expression = expression.replace(/(\d)\(/g, '$1*(');
 
         let resultat = eval(expression);
 
-        // Gestion de la division par zéro ou erreurs de calcul mathématique
         if (resultat === Infinity || resultat === -Infinity || isNaN(resultat)) {
             afficheur.value = "Erreur";
             return;
         }
 
-        // Arrondi pour éviter les imprécisions d'affichage des décimaux JS (Float precision)
+        // Arrondi de précision float JS
         resultat = Math.round((resultat + Number.EPSILON) * 1e10) / 1e10;
 
-        // Formater le résultat en remplaçant le point par la virgule
         afficheur.value = resultat.toString().replace(/\./g, ',');
     } catch (error) {
         afficheur.value = "Erreur";
@@ -86,7 +83,6 @@ function realiserCalcul() {
 }
 
 function ajouterVirgule() {
-    // Séparer les nombres selon tous les opérateurs possibles
     let partieAfficheur = afficheur.value.split(/[\+\-\*\/X÷%]/);
     let dernierePartie = partieAfficheur[partieAfficheur.length - 1];
 
@@ -117,12 +113,13 @@ function gererParenthese() {
     }
 }
 
-// Événements pour tous les boutons
+// Événements pour tous les boutons (lecture via data-val)
 boutons.forEach(bouton => {
     bouton.addEventListener('click', () => {
-        if (eteint) return; // Sécurité si la machine est éteinte
+        if (eteint) return;
 
-        const valeur = bouton.textContent;
+        // On extrait l'attribut data-val défini dans le HTML
+        const valeur = bouton.dataset.val;
 
         if (afficheur.value === "Erreur") {
             afficheur.value = '0';
@@ -150,7 +147,7 @@ on_off.addEventListener('click', allumerEcran);
 
 
 // ==========================================
-// 2. ORIENTATION 3D SUBTILE AU SURVOL SOURIS
+// 2. ORIENTATION 3D SUBTILE AU SURVOL
 // ==========================================
 
 function orienterCalculatriceSubtilement(evenement) {
@@ -160,7 +157,6 @@ function orienterCalculatriceSubtilement(evenement) {
     const positionX = (evenement.clientX - largeurFenetre / 2) / (largeurFenetre / 2);
     const positionY = (evenement.clientY - hauteurFenetre / 2) / (hauteurFenetre / 2);
 
-    // Orientation très subtile (max 5 degrés)
     const rotationX = positionY * -5;
     const rotationY = positionX * 5;
 
@@ -207,5 +203,4 @@ boutonClair.addEventListener('click', activerThemeClair);
 
 // Initialisation au chargement
 chargerThemePrecedent();
-// Mise en état initial éteint
 afficheur.style.opacity = '0.3';
