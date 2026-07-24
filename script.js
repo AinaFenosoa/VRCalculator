@@ -1,3 +1,4 @@
+// --- Éléments du DOM ---
 const on_off = document.getElementById('on_off');
 const afficheur = document.getElementById('afficheur');
 const boutons = document.querySelectorAll('.boutons button');
@@ -7,7 +8,9 @@ const conteneur = document.querySelector('.container');
 const boutonSombre = document.getElementById('mode_sombre');
 const boutonClair = document.getElementById('mode_clair');
 
+// --- État de la calculatrice ---
 let eteint = true;
+let enInitialisation = false;
 let timeoutId;
 
 // ==========================================
@@ -15,11 +18,15 @@ let timeoutId;
 // ==========================================
 
 function allumerEcran() {
+    if (enInitialisation) return;
+
     if (eteint) {
         eteint = false;
+        enInitialisation = true;
         afficheur.style.opacity = '1';
         afficherMessage("Bonjour...", () => {
             afficheur.value = "0";
+            enInitialisation = false;
         });
     } else {
         eteindreEcran();
@@ -49,19 +56,23 @@ function eteindreEcran() {
     afficheur.value = "";
     afficheur.style.opacity = '0.3';
     eteint = true;
+    enInitialisation = false;
 }
 
 function realiserCalcul() {
     try {
         let expression = afficheur.value;
 
+        // Remplacement des symboles visuels
         expression = expression
             .replace(/X/g, '*')
             .replace(/÷/g, '/')
             .replace(/,/g, '.')
             .replace(/%/g, '/100');
 
-        expression = expression.replace(/(\d)\(/g, '$1*(');
+        expression = expression.replace(/(\d|\))\(/g, '$1*(');
+
+        expression = expression.replace(/\)(\d)/g, ')*$1');
 
         let resultat = eval(expression);
 
@@ -70,6 +81,7 @@ function realiserCalcul() {
             return;
         }
 
+        // Arrondi de précision float JS
         resultat = Math.round((resultat + Number.EPSILON) * 1e10) / 1e10;
 
         afficheur.value = resultat.toString().replace(/\./g, ',');
@@ -109,9 +121,10 @@ function gererParenthese() {
     }
 }
 
+// Événements boutons
 boutons.forEach(bouton => {
     bouton.addEventListener('click', () => {
-        if (eteint) return;
+        if (eteint || enInitialisation) return;
 
         const valeur = bouton.dataset.val;
 
@@ -195,5 +208,6 @@ function activerThemeClair() {
 boutonSombre.addEventListener('click', activerThemeSombre);
 boutonClair.addEventListener('click', activerThemeClair);
 
+// Initialisation
 chargerThemePrecedent();
 afficheur.style.opacity = '0.3';
